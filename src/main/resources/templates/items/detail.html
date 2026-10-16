@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Item')}"></head>
+<body>
+<nav th:replace="~{fragments :: nav}"></nav>
+<main>
+    <h1 id="item-name" th:text="${item.name}"></h1>
+    <p><span th:class="'badge status-badge ' + ${item.status.css}"
+             th:text="${item.status.icon + ' ' + item.status.label}"></span></p>
+    <table>
+        <tr><th>Category</th><td th:text="${item.category}"></td></tr>
+        <tr><th>Price</th><td th:text="${#numbers.formatDecimal(item.price, 1, 'COMMA', 2, 'POINT')}"></td></tr>
+        <tr><th>Quantity</th><td id="item-quantity" th:text="${item.quantity}"></td></tr>
+        <tr><th>Low-stock threshold</th><td id="item-threshold" th:text="${item.lowStockThreshold}"></td></tr>
+    </table>
+    <p>
+        <a th:if="${isAdmin}" th:href="@{/admin/items/{id}/edit(id=${item.id})}" id="edit-link">Edit</a>
+        <a th:href="@{/items}">Back to catalogue</a>
+    </p>
+</main>
+</body>
+</html>

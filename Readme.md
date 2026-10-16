@@ -47,6 +47,10 @@ Open http://localhost:8080 in your browser.
 
 ## Project Structure
 
+## Branching
+
+See [docs/branching-strategy.md](docs/branching-strategy.md) for branch names, commit conventions and the pull request workflow.
+
 ```
 .
 ├── docs/            documentation and task evidence
@@ -61,9 +65,9 @@ Open http://localhost:8080 in your browser.
 | 1 | Problem definition and scope | Done |
 | 2 | Agile planning and DevOps workflow | Done |
 | 3 | Requirements, architecture and setup | Done |
-| 4 | Git and GitHub repository | In progress |
+| 4 | Git and GitHub repository | Done |
 | 5 | Feature 1 with branching and pull request | Planned |
-| 6 | MVP completion, merge conflict, release tag | Planned |
+| 6 | MVP completion, merge conflict, release tag | In progress: catalogue features |
 | 7 | Jenkins installation and CI job | Planned |
 | 8 | Jenkinsfile and Tomcat deployment | Planned |
 | 9 | Selenium tests (local) | Planned |
