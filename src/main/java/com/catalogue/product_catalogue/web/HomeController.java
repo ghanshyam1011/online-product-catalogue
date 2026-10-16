@@ -1,4 +1,4 @@
-package com.catalogue.productcatalogue.web;
+package com.catalogue.product_catalogue.web;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
