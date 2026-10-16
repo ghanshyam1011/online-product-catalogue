@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head(title)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${title}">Page</title>
+    <style>
+        body { font-family: system-ui, Arial, sans-serif; margin: 0; color: #222; }
+        main { max-width: 900px; margin: 0 auto; padding: 16px; }
+        .nav { display: flex; gap: 16px; align-items: center; padding: 10px 16px; background: #1f2937; color: #fff; }
+        .nav a { color: #fff; text-decoration: none; }
+        .nav .spacer { flex: 1; }
+        .nav form { margin: 0; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { text-align: left; padding: 8px; border-bottom: 1px solid #ddd; }
+        .badge { padding: 2px 8px; border-radius: 10px; font-size: .85em; color: #fff; }
+        .badge.green, .alert.green { background: #2e7d32; }
+        .badge.amber, .alert.amber { background: #b26a00; }
+        .badge.red, .alert.red { background: #c62828; }
+        .alert { padding: 10px 14px; border-radius: 6px; margin: 12px 0; color: #fff; }
+        .filters { display: flex; gap: 8px; flex-wrap: wrap; margin: 12px 0; }
+        .error { color: #c62828; font-size: .9em; }
+        label { display: block; margin-bottom: 4px; }
+        form p { margin: 10px 0; }
+    </style>
+</head>
+<body>
+<nav th:fragment="nav" class="nav">
+    <a th:href="@{/}" id="nav-home">Home</a>
+    <a th:href="@{/items}" id="nav-catalogue">Catalogue</a>
+    <a th:if="${isAdmin}" th:href="@{/admin/items/new}" id="nav-add-item">Add item</a>
+    <a th:if="${isAdmin}" th:href="@{/admin/alerts}" id="nav-alerts">Stock alerts</a>
+    <span class="spacer"></span>
+    <span id="current-user" th:text="${currentUser}"></span>
+    <form th:action="@{/logout}" method="post">
+        <button type="submit" id="logout-button">Log out</button>
+    </form>
+</nav>
+</body>
+</html>

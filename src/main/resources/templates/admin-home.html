@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Admin</title>
-</head>
+<head th:replace="~{fragments :: head('Admin')}"></head>
 <body>
+<nav th:replace="~{fragments :: nav}"></nav>
+<main>
     <h1>Admin area</h1>
-    <p>Item management will appear here.</p>
-    <p><a th:href="@{/}">Back to home</a></p>
+    <ul>
+        <li><a th:href="@{/admin/items/new}">Add a new item</a></li>
+        <li><a th:href="@{/admin/alerts}">View stock alerts</a></li>
+        <li><a th:href="@{/items}">Manage items from the catalogue</a></li>
+    </ul>
+</main>
 </body>
 </html>
