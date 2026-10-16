@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Stock alerts')}"></head>
+<body>
+<nav th:replace="~{fragments :: nav}"></nav>
+<main>
+    <h1>Stock alerts</h1>
+    <p th:if="${#lists.isEmpty(items)}" id="no-alerts">No stock alerts. Everything is in stock.</p>
+    <table th:unless="${#lists.isEmpty(items)}" id="alerts-table">
+        <thead>
+        <tr><th>Name</th><th>Quantity</th><th>Threshold</th><th>Status</th><th>Alert</th><th></th></tr>
+        </thead>
+        <tbody>
+        <tr th:each="item : ${items}" class="alert-row">
+            <td th:text="${item.name}"></td>
+            <td th:text="${item.quantity}"></td>
+            <td th:text="${item.lowStockThreshold}"></td>
+            <td><span th:class="'badge status-badge ' + ${item.status.css}"
+                      th:text="${item.status.icon + ' ' + item.status.label}"></span></td>
+            <td th:text="${item.status.alertMessage}"></td>
+            <td><a th:href="@{/admin/items/{id}/edit(id=${item.id})}">Restock</a></td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+</body>
+</html>
