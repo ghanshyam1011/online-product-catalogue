@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Catalogue')}"></head>
+<body>
+<nav th:replace="~{fragments :: nav}"></nav>
+<main>
+    <h1>Product catalogue</h1>
+
+    <div th:if="${stockAlert}" th:class="'alert ' + ${stockAlert.css}" id="stock-alert">
+        <span th:text="${stockAlert.icon}"></span>
+        <span id="stock-alert-message" th:text="${stockAlert.message}"></span>
+    </div>
+    <div th:if="${message}" class="alert green" id="flash-message" th:text="${message}"></div>
+
+    <form th:action="@{/items}" method="get" class="filters">
+        <input type="text" name="q" id="search-input" placeholder="Search by name" th:value="${q}">
+        <select name="category" id="category-filter">
+            <option value="">All categories</option>
+            <option th:each="c : ${categories}" th:value="${c}" th:text="${c}" th:selected="${c == category}"></option>
+        </select>
+        <input type="number" name="minPrice" id="min-price" step="0.01" placeholder="Min price" th:value="${minPrice}">
+        <input type="number" name="maxPrice" id="max-price" step="0.01" placeholder="Max price" th:value="${maxPrice}">
+        <button type="submit" id="search-button">Search</button>
+        <a th:href="@{/items}" id="clear-filters">Clear</a>
+    </form>
+
+    <p th:if="${#lists.isEmpty(items)}" id="empty-message"
+       th:text="${filtered ? 'No products found' : 'No products available'}"></p>
+
+    <table th:unless="${#lists.isEmpty(items)}" id="item-table">
+        <thead>
+        <tr>
+            <th>Name</th><th>Category</th><th>Price</th><th>Quantity</th><th>Status</th>
+            <th th:if="${isAdmin}"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="item : ${items}" class="item-row">
+            <td><a th:href="@{/items/{id}(id=${item.id})}" th:text="${item.name}" class="item-name"></a></td>
+            <td th:text="${item.category}"></td>
+            <td th:text="${#numbers.formatDecimal(item.price, 1, 'COMMA', 2, 'POINT')}"></td>
+            <td th:text="${item.quantity}" class="item-quantity"></td>
+            <td><span th:class="'badge status-badge ' + ${item.status.css}"
+                      th:text="${item.status.icon + ' ' + item.status.label}"></span></td>
+            <td th:if="${isAdmin}"><a th:href="@{/admin/items/{id}/edit(id=${item.id})}" class="edit-link">Edit</a></td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+</body>
+</html>
