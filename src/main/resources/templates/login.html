@@ -10,11 +10,13 @@
 
     <p th:if="${param.error}" id="login-error" style="color:red">Invalid email or password.</p>
     <p th:if="${param.logout}" id="logout-message" style="color:green">You have been logged out.</p>
+    <p th:if="${param.registered}" id="registered-message" style="color:green">Account created. You can log in now.</p>
 
     <form th:action="@{/login}" method="post">
         <p><label>Email <input type="text" name="username" id="username"></label></p>
         <p><label>Password <input type="password" name="password" id="password"></label></p>
         <button type="submit" id="login-button">Log in</button>
     </form>
+    <p>No account? <a th:href="@{/register}" id="register-link">Register</a></p>
 </body>
 </html>

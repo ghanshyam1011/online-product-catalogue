@@ -1,0 +1,14 @@
+﻿* 498d21c (HEAD -> develop, origin/develop) docs: add README merge conflict evidence
+* f9e6291 docs: mark Tasks 5 and 6 done
+* c5ae0e8 merge: resolve README conflict between main and develop
+*   459d2a2 Merge remote-tracking branch 'origin/main' into develop
+|\  
+| *   8ac4124 (tag: v1.0, origin/main, origin/HEAD, main) Merge pull request #10 from ghanshyam1011/feature/us1-us6-catalogue
+| |\  
+| | * e5e484e (origin/feature/us1-us6-catalogue, feature/us1-us6-catalogue) docs: mark catalogue features in progress and add Task 6 evidence
+| | * d919aba feat: add admin item form and stock alerts templates
+| | * 3c89bf5 feat: add catalogue templates with search, filter and stock badges
+| | * 46a6f67 feat: add admin item form and stock alerts page
+| | * a4bf669 feat: add catalogue pages with search, filter and stock status
+| | * ffe1e35 feat: add item service, search and sample data
+| | * 8dc1a4e feat: add item entity, stock status and repository
