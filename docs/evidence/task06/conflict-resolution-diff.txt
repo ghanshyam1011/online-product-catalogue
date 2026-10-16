@@ -1,0 +1,21 @@
+﻿commit 459d2a2877178e825cf42a32a75cd2263981cc8c
+Merge: c7a12e6 8ac4124
+Author: ghanshyam1011 <kumavatghanshyam10@gmail.com>
+Date:   Sat Oct 17 02:12:00 2026 +0530
+
+    Merge remote-tracking branch 'origin/main' into develop
+
+diff --cc Readme.md
+index a60e077,aebeb28..2c8f0b8
+--- a/Readme.md
++++ b/Readme.md
+@@@ -67,7 -67,7 +67,7 @@@ See [docs/branching-strategy.md](docs/b
+  | 3 | Requirements, architecture and setup | Done |
+  | 4 | Git and GitHub repository | Done |
+  | 5 | Feature 1 with branching and pull request | Planned |
+- | 6 | MVP completion, merge conflict, release tag | Done |
+ -| 6 | MVP completion, merge conflict, release tag | In progress: catalogue features |
+++| 6 | MVP completion, merge conflict, release tag | Planned |
+  | 7 | Jenkins installation and CI job | Planned |
+  | 8 | Jenkinsfile and Tomcat deployment | Planned |
+  | 9 | Selenium tests (local) | Planned |
