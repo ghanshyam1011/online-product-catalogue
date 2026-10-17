@@ -68,7 +68,7 @@ See [docs/branching-strategy.md](docs/branching-strategy.md) for branch names, c
 | 4 | Git and GitHub repository | Done |
 | 5 | Feature 1 with branching and pull request | Done |
 | 6 | MVP completion, merge conflict, release tag | Done |
-| 7 | Jenkins installation and CI job | Planned |
+| 7 | Jenkins installation and CI job | Done |
 | 8 | Jenkinsfile and Tomcat deployment | Planned |
 | 9 | Selenium tests (local) | Planned |
 | 10 | Continuous testing in Jenkins | Planned |
