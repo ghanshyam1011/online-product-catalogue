@@ -1,0 +1,64 @@
+Microsoft Windows [Version 10.0.26200.9457]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\GHANSHYAM>powershell
+Windows PowerShell
+Copyright (C) Microsoft Corporation. All rights reserved.
+
+Loading personal and system profiles took 8909ms.
+PS C:\Users\GHANSHYAM> Move-Item "C:\apache-tomcat-10.1.61-windows-x64\apache-tomcat-10.1.61" C:\Tools\tomcat
+PS C:\Users\GHANSHYAM> dir C:\Tools\tomcat\bin\startup.bat
+
+
+    Directory: C:\Tools\tomcat\bin
+
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+-a----        06-10-2026     22:56           2022 startup.bat
+
+
+PS C:\Users\GHANSHYAM> (Get-Content C:\Tools\tomcat\conf\server.xml) -replace 'port="8080"', 'port="8081"' | Set-Content C:\Tools\tomcat\conf\server.xml
+PS C:\Users\GHANSHYAM> Select-String 'port="8081"' C:\Tools\tomcat\conf\server.xml
+
+C:\Tools\tomcat\conf\server.xml:70:    <Connector port="8081" protocol="HTTP/1.1"
+C:\Tools\tomcat\conf\server.xml:78:               port="8081" protocol="HTTP/1.1"
+
+
+PS C:\Users\GHANSHYAM> Set-Content C:\Tools\tomcat\bin\setenv.bat 'set "CATALINA_OPTS=-DADMIN_PASSWORD=Shyam@2023 -DUSER_PASSWORD=Shyam@2026"'
+PS C:\Users\GHANSHYAM> Get-Content C:\Tools\tomcat\bin\setenv.bat
+set "CATALINA_OPTS=-DADMIN_PASSWORD=Shyam@2023 -DUSER_PASSWORD=Shyam@2026"
+PS C:\Users\GHANSHYAM> C:\Tools\tomcat\bin\startup.bat
+The CATALINA_HOME environment variable is not defined correctly
+This environment variable is needed to run this program
+PS C:\Users\GHANSHYAM> Initializing ProtocolHandler ["http-nio-8081"]
+Initializing : The term 'Initializing' is not recognized as the name of a cmdlet, function, script file, or operable
+program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+At line:1 char:1
++ Initializing ProtocolHandler ["http-nio-8081"]
++ ~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (Initializing:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+PS C:\Users\GHANSHYAM> Server startup in [...] milliseconds
+Server : The term 'Server' is not recognized as the name of a cmdlet, function, script file, or operable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+At line:1 char:1
++ Server startup in [...] milliseconds
++ ~~~~~~
+    + CategoryInfo          : ObjectNotFound: (Server:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+
+PS C:\Users\GHANSHYAM> $env:CATALINA_HOME
+PS C:\Users\GHANSHYAM> [Environment]::GetEnvironmentVariable('CATALINA_HOME','User')
+PS C:\Users\GHANSHYAM> [Environment]::GetEnvironmentVariable('CATALINA_HOME','Machine')
+PS C:\Users\GHANSHYAM> $env:CATALINA_HOME = "C:\Tools\tomcat"
+PS C:\Users\GHANSHYAM> [Environment]::SetEnvironmentVariable('CATALINA_HOME','C:\Tools\tomcat','User')
+PS C:\Users\GHANSHYAM> C:\Tools\tomcat\bin\startup.bat
+Using CATALINA_BASE:   "C:\Tools\tomcat"
+Using CATALINA_HOME:   "C:\Tools\tomcat"
+Using CATALINA_TMPDIR: "C:\Tools\tomcat\temp"
+Using JRE_HOME:        "C:\Program Files\Java\jdk-21.0.12"
+Using CLASSPATH:       "C:\Tools\tomcat\bin\bootstrap.jar;C:\Tools\tomcat\bin\tomcat-juli.jar"
+Using CATALINA_OPTS:   "-DADMIN_PASSWORD=Shyam@2023 -DUSER_PASSWORD=Shyam@2026"
+PS C:\Users\GHANSHYAM>
