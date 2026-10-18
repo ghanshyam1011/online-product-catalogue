@@ -34,6 +34,8 @@ Small retailers and local suppliers often manage products, prices and stock in s
 - JDK 17
 - Maven 3.9 or newer
 - Git
+- Chrome (for the Selenium tests)
+- Docker Desktop (for the container and Ansible parts)
 
 ## Run Locally
 
@@ -45,16 +47,62 @@ mvn spring-boot:run
 
 Open http://localhost:8080 in your browser.
 
-## Project Structure
+Accounts are seeded only when passwords are provided as environment variables:
+`ADMIN_PASSWORD` (admin@catalogue.local) and `USER_PASSWORD` (user@catalogue.local). Emails can be changed with `ADMIN_EMAIL` and `USER_EMAIL`. Anyone can also register as a USER.
+
+## Tests
+
+```
+mvn test
+```
+
+Runs the Spring context test and 12 Selenium WebDriver tests (headless Chrome) covering login, registration, search, category filter, stock status badges, role-based access, admin add item and logout.
+
+## CI/CD Pipeline
+
+The `Jenkinsfile` runs these stages on every build of `develop`:
+
+| Stage | What it does |
+|---|---|
+| Checkout | Pulls the code from GitHub |
+| Build | `mvn clean compile` |
+| Test | `mvn test` (Selenium tests) and publishes JUnit results |
+| Package | Builds the executable WAR and archives it |
+| Deploy | Copies the WAR to Tomcat (`catalogue-dev`) on port 8081 |
+| Verify | Waits for `/login` to return 200 |
+| Docker Build | Builds `product-catalogue:<build number>` |
+| Docker Deploy | Runs the container on port 8082 with passwords from Jenkins credentials |
+| Docker Verify | Waits for the container's `/login` to return 200 |
+
+Jenkins credentials needed: `catalogue-admin-password` and `catalogue-user-password` (secret text).
+
+## Docker
+
+```
+mvn -B package -DskipTests
+docker build -t product-catalogue:1.0 .
+docker run -d --name catalogue -p 8082:8080 -e ADMIN_PASSWORD=<pass> -e USER_PASSWORD=<pass> product-catalogue:1.0
+```
+
+See [docs/docker-commands.md](docs/docker-commands.md).
+
+## Ansible
+
+Playbooks in `ansible/` deploy and roll back the container. Ansible runs inside a Docker container, so nothing is installed on Windows. See [docs/ansible.md](docs/ansible.md).
 
 ## Branching
 
 See [docs/branching-strategy.md](docs/branching-strategy.md) for branch names, commit conventions and the pull request workflow.
 
+## Project Structure
+
 ```
 .
+├── ansible/         Ansible deploy and rollback playbooks
 ├── docs/            documentation and task evidence
-├── src/             application source code
+├── src/             application source and Selenium tests
+├── Dockerfile       container image
+├── Jenkinsfile      CI/CD pipeline
 └── pom.xml          Maven build file
 ```
 
@@ -74,7 +122,7 @@ See [docs/branching-strategy.md](docs/branching-strategy.md) for branch names, c
 | 10 | Continuous testing in Jenkins | Done |
 | 11 | Docker image and container lifecycle | Done |
 | 12 | Jenkins and Docker continuous deployment | Done |
-| 13 | Ansible configuration management | Planned |
-| 14 | Provisioning, idempotency and rollback | Planned |
-| 15 | Final release, documentation and viva | Planned |
+| 13 | Ansible configuration management | Done |
+| 14 | Provisioning, idempotency and rollback | Done |
+| 15 | Final release, documentation and viva | Done |
 
