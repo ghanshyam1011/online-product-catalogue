@@ -1,0 +1,73 @@
+---
+# Provision and deploy the catalogue container. Safe to run repeatedly (idempotent).
+#   ansible-playbook -i inventory.ini deploy.yml -e app_version=1.0 \
+#       -e admin_password=... -e user_password=...
+- name: Deploy Online Product Catalogue
+  hosts: catalogue
+  gather_facts: false
+  vars:
+    app_name: catalogue-ansible
+    app_image: product-catalogue
+    host_port: 8083
+    health_host: host.docker.internal
+  tasks:
+    - name: Check required variables are set
+      ansible.builtin.assert:
+        that:
+          - app_version is defined
+          - admin_password is defined
+          - user_password is defined
+        fail_msg: "Pass -e app_version=... -e admin_password=... -e user_password=..."
+
+    - name: Look up the currently deployed container
+      community.docker.docker_container_info:
+        name: "{{ app_name }}"
+      register: current
+
+    - name: Work out the previous version (only changes when the version changes)
+      ansible.builtin.set_fact:
+        running_version: "{{ current.container.Config.Labels.version | default('none') if current.exists else 'none' }}"
+        running_previous: "{{ current.container.Config.Labels.previous_version | default('none') if current.exists else 'none' }}"
+
+    - name: Set previous_version
+      ansible.builtin.set_fact:
+        previous_version: "{{ running_version if running_version != app_version else running_previous }}"
+
+    - name: Ensure the application network exists
+      community.docker.docker_network:
+        name: catalogue-net
+        state: present
+
+    - name: Run the catalogue container
+      community.docker.docker_container:
+        name: "{{ app_name }}"
+        image: "{{ app_image }}:{{ app_version }}"
+        pull: never
+        state: started
+        restart_policy: unless-stopped
+        recreate: false
+        networks:
+          - name: catalogue-net
+        published_ports:
+          - "{{ host_port }}:8080"
+        env:
+          ADMIN_PASSWORD: "{{ admin_password }}"
+          USER_PASSWORD: "{{ user_password }}"
+        labels:
+          version: "{{ app_version }}"
+          previous_version: "{{ previous_version }}"
+      no_log: true
+      register: run_result
+
+    - name: Wait until the login page answers
+      ansible.builtin.uri:
+        url: "http://{{ health_host }}:{{ host_port }}/login"
+        status_code: 200
+      register: health
+      retries: 30
+      delay: 5
+      until: health.status == 200
+
+    - name: Report result
+      ansible.builtin.debug:
+        msg: "{{ app_name }} is running version {{ app_version }} (previous: {{ previous_version }}) at http://localhost:{{ host_port }}/"

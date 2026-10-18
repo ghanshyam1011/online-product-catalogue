@@ -1,0 +1,30 @@
+---
+# Roll back to the version that was running before the last deploy.
+#   ansible-playbook -i inventory.ini rollback.yml -e admin_password=... -e user_password=...
+- name: Find the previous version
+  hosts: catalogue
+  gather_facts: false
+  tasks:
+    - name: Read labels of the running container
+      community.docker.docker_container_info:
+        name: catalogue-ansible
+      register: current
+
+    - name: Stop if there is nothing to roll back to
+      ansible.builtin.assert:
+        that:
+          - current.exists
+          - current.container.Config.Labels.previous_version | default('none') != 'none'
+        fail_msg: "No previous version recorded"
+
+    - name: Set the version to roll back to
+      ansible.builtin.set_fact:
+        app_version: "{{ current.container.Config.Labels.previous_version }}"
+
+    - name: Replace the running container
+      community.docker.docker_container:
+        name: catalogue-ansible
+        state: absent
+
+- name: Redeploy the previous version
+  ansible.builtin.import_playbook: deploy.yml
