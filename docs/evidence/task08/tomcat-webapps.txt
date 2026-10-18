@@ -1,0 +1,5 @@
+﻿docs
+examples
+host-manager
+manager
+ROOT
