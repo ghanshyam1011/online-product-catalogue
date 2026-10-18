@@ -70,8 +70,8 @@ See [docs/branching-strategy.md](docs/branching-strategy.md) for branch names, c
 | 6 | MVP completion, merge conflict, release tag | Done |
 | 7 | Jenkins installation and CI job | Done |
 | 8 | Jenkinsfile and Tomcat deployment | Done |
-| 9 | Selenium tests (local) | Planned |
-| 10 | Continuous testing in Jenkins | Planned |
+| 9 | Selenium tests (local) | Done |
+| 10 | Continuous testing in Jenkins | Done |
 | 11 | Docker image and container lifecycle | Planned |
 | 12 | Jenkins and Docker continuous deployment | Planned |
 | 13 | Ansible configuration management | Planned |
