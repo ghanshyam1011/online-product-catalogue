@@ -1,22 +1,21 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Login</title>
-</head>
+<head th:replace="~{fragments :: head('Login')}"></head>
 <body>
+<main class="auth">
     <h1>Online Product Catalogue</h1>
-    <h2>Login</h2>
+    <h2>Log in to your account</h2>
 
-    <p th:if="${param.error}" id="login-error" style="color:red">Invalid email or password.</p>
-    <p th:if="${param.logout}" id="logout-message" style="color:green">You have been logged out.</p>
-    <p th:if="${param.registered}" id="registered-message" style="color:green">Account created. You can log in now.</p>
+    <p th:if="${param.error}" id="login-error" class="msg bad">Invalid email or password.</p>
+    <p th:if="${param.logout}" id="logout-message" class="msg ok">You have been logged out.</p>
+    <p th:if="${param.registered}" id="registered-message" class="msg ok">Account created. You can log in now.</p>
 
     <form th:action="@{/login}" method="post">
-        <p><label>Email <input type="text" name="username" id="username"></label></p>
-        <p><label>Password <input type="password" name="password" id="password"></label></p>
+        <p><label for="username">Email</label><input type="text" name="username" id="username"></p>
+        <p><label for="password">Password</label><input type="password" name="password" id="password"></p>
         <button type="submit" id="login-button">Log in</button>
     </form>
-    <p>No account? <a th:href="@{/register}" id="register-link">Register</a></p>
+    <p class="center">No account? <a th:href="@{/register}" id="register-link">Register</a></p>
+</main>
 </body>
 </html>
