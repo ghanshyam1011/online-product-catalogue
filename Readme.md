@@ -72,7 +72,7 @@ See [docs/branching-strategy.md](docs/branching-strategy.md) for branch names, c
 | 8 | Jenkinsfile and Tomcat deployment | Done |
 | 9 | Selenium tests (local) | Done |
 | 10 | Continuous testing in Jenkins | Done |
-| 11 | Docker image and container lifecycle | Planned |
+| 11 | Docker image and container lifecycle | Done |
 | 12 | Jenkins and Docker continuous deployment | Planned |
 | 13 | Ansible configuration management | Planned |
 | 14 | Provisioning, idempotency and rollback | Planned |
