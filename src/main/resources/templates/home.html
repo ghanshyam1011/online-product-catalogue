@@ -5,9 +5,17 @@
 <nav th:replace="~{fragments :: nav}"></nav>
 <main>
     <h1>Online Product Catalogue</h1>
-    <p>Welcome, <span th:text="${email}"></span></p>
-    <p><a th:href="@{/items}" id="browse-link">Browse the catalogue</a></p>
-    <p th:if="${isAdmin}"><a th:href="@{/admin}" id="admin-link">Admin area</a></p>
+    <p>Welcome, <strong th:text="${email}"></strong></p>
+    <div class="tiles">
+        <a th:href="@{/items}" id="browse-link" class="tile">
+            <strong>Browse the catalogue</strong>
+            <span>Search products and check stock levels</span>
+        </a>
+        <a th:if="${isAdmin}" th:href="@{/admin}" id="admin-link" class="tile">
+            <strong>Admin area</strong>
+            <span>Add items, update stock, see alerts</span>
+        </a>
+    </div>
 </main>
 </body>
 </html>

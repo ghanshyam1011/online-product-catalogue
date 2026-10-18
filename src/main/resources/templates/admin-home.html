@@ -5,11 +5,11 @@
 <nav th:replace="~{fragments :: nav}"></nav>
 <main>
     <h1>Admin area</h1>
-    <ul>
-        <li><a th:href="@{/admin/items/new}">Add a new item</a></li>
-        <li><a th:href="@{/admin/alerts}">View stock alerts</a></li>
-        <li><a th:href="@{/items}">Manage items from the catalogue</a></li>
-    </ul>
+    <div class="tiles">
+        <a th:href="@{/admin/items/new}" class="tile"><strong>Add a new item</strong><span>Create a product with price and stock</span></a>
+        <a th:href="@{/admin/alerts}" class="tile"><strong>Stock alerts</strong><span>Items that are low or out of stock</span></a>
+        <a th:href="@{/items}" class="tile"><strong>Manage items</strong><span>Open the catalogue and edit an item</span></a>
+    </div>
 </main>
 </body>
 </html>

@@ -12,7 +12,7 @@
     </div>
     <div th:if="${message}" class="alert green" id="flash-message" th:text="${message}"></div>
 
-    <form th:action="@{/items}" method="get" class="filters">
+    <form th:action="@{/items}" method="get" class="filters" autocomplete="off">
         <input type="text" name="q" id="search-input" placeholder="Search by name" th:value="${q}">
         <select name="category" id="category-filter">
             <option value="">All categories</option>
