@@ -27,9 +27,20 @@ pipeline {
             }
         }
 
+        stage('Test') {
+            steps {
+                bat 'mvn -B test'
+            }
+            post {
+                always {
+                    junit testResults: 'target/surefire-reports/*.xml', allowEmptyResults: true
+                }
+            }
+        }
+
         stage('Package') {
             steps {
-                bat 'mvn -B package'
+                bat 'mvn -B package -DskipTests'
             }
             post {
                 success {
