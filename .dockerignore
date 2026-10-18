@@ -1,0 +1,8 @@
+.git
+.idea
+.vscode
+docs
+*.md
+Jenkinsfile
+target/*
+!target/product-catalogue-0.0.1-SNAPSHOT.war
