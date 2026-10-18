@@ -50,7 +50,7 @@ pipeline {
             steps {
                 powershell '''
                     $url = "http://localhost:8081/catalogue-$env:DEPLOY_ENV/login"
-                    for ($i = 0; $i -lt 12; $i++) {
+                    for ($i = 0; $i -lt 36; $i++) {
                         try {
                             $r = Invoke-WebRequest -Uri $url -UseBasicParsing -TimeoutSec 5
                             if ($r.StatusCode -eq 200) {
