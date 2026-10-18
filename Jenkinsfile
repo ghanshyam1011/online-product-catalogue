@@ -78,11 +78,56 @@ pipeline {
                 '''
             }
         }
+
+        stage('Docker Build') {
+            steps {
+                bat 'docker build -t product-catalogue:%BUILD_NUMBER% -t product-catalogue:latest .'
+            }
+        }
+
+        stage('Docker Deploy') {
+            steps {
+                withCredentials([
+                    string(credentialsId: 'catalogue-admin-password', variable: 'ADMIN_PASSWORD'),
+                    string(credentialsId: 'catalogue-user-password', variable: 'USER_PASSWORD')
+                ]) {
+                    // -e NAME without a value passes the variable from this process,
+                    // so the passwords never appear on the command line or in the image.
+                    bat '''
+                        docker rm -f catalogue-docker 2>nul
+                        docker run -d --name catalogue-docker -p 8082:8080 -e ADMIN_PASSWORD -e USER_PASSWORD product-catalogue:%BUILD_NUMBER%
+                    '''
+                }
+            }
+        }
+
+        stage('Docker Verify') {
+            steps {
+                powershell '''
+                    $url = "http://localhost:8082/login"
+                    for ($i = 0; $i -lt 36; $i++) {
+                        try {
+                            $r = Invoke-WebRequest -Uri $url -UseBasicParsing -TimeoutSec 5
+                            if ($r.StatusCode -eq 200) {
+                                Write-Host "Container is up at $url"
+                                exit 0
+                            }
+                        } catch {
+                            Write-Host "Waiting for $url ..."
+                        }
+                        Start-Sleep -Seconds 5
+                    }
+                    docker logs --tail 50 catalogue-docker
+                    Write-Host "Container did not come up at $url"
+                    exit 1
+                '''
+            }
+        }
     }
 
     post {
         success {
-            echo "Deployed. Open http://localhost:8081/catalogue-${params.DEPLOY_ENV}/"
+            echo "Deployed. Tomcat: http://localhost:8081/catalogue-${params.DEPLOY_ENV}/  Docker: http://localhost:8082/"
         }
         failure {
             echo 'Pipeline failed. Check the stage that turned red.'
