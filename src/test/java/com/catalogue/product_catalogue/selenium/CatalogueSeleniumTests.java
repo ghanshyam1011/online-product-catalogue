@@ -1,7 +1,6 @@
 package com.catalogue.product_catalogue.selenium;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.Duration;
@@ -78,7 +77,12 @@ class CatalogueSeleniumTests {
         wait.until(ExpectedConditions.presenceOfElementLocated(By.id("admin-link")));
     }
 
+    private WebElement waitFor(By by) {
+        return wait.until(ExpectedConditions.visibilityOfElementLocated(by));
+    }
+
     private List<WebElement> rows() {
+        waitFor(By.id("item-table"));
         return driver.findElements(By.cssSelector(".item-row"));
     }
 
@@ -91,7 +95,7 @@ class CatalogueSeleniumTests {
     @Test
     void loginWithWrongPasswordShowsError() {
         login("user@test.local", "wrong-password");
-        assertTrue(driver.findElement(By.id("login-error")).isDisplayed());
+        assertTrue(waitFor(By.id("login-error")).isDisplayed());
     }
 
     @Test
@@ -99,7 +103,7 @@ class CatalogueSeleniumTests {
         loginAsUser();
         driver.findElement(By.id("browse-link")).click();
         assertTrue(rows().size() >= 8);
-        assertEquals("user@test.local", driver.findElement(By.id("current-user")).getText());
+        assertEquals("user@test.local", waitFor(By.id("current-user")).getText());
     }
 
     @Test
@@ -109,7 +113,7 @@ class CatalogueSeleniumTests {
         driver.findElement(By.name("email")).sendKeys("selenium@test.local");
         driver.findElement(By.name("password")).sendKeys("Selenium#123");
         driver.findElement(By.id("register-button")).click();
-        assertTrue(driver.findElement(By.id("registered-message")).isDisplayed());
+        assertTrue(waitFor(By.id("registered-message")).isDisplayed());
     }
 
     @Test
@@ -126,7 +130,7 @@ class CatalogueSeleniumTests {
     void searchWithNoMatchShowsEmptyMessage() {
         loginAsUser();
         driver.get(url("/items?q=doesnotexist"));
-        assertEquals("No products found", driver.findElement(By.id("empty-message")).getText());
+        assertEquals("No products found", waitFor(By.id("empty-message")).getText());
     }
 
     @Test
@@ -140,7 +144,7 @@ class CatalogueSeleniumTests {
     void stockStatusBadgesAreShown() {
         loginAsUser();
         driver.get(url("/items"));
-        String page = driver.findElement(By.id("item-table")).getText();
+        String page = waitFor(By.id("item-table")).getText();
         assertTrue(page.contains("In stock"));
         assertTrue(page.contains("Low stock"));
         assertTrue(page.contains("Out of stock"));
@@ -151,7 +155,7 @@ class CatalogueSeleniumTests {
         loginAsUser();
         assertTrue(driver.findElements(By.id("admin-link")).isEmpty());
         driver.get(url("/admin/items/new"));
-        assertEquals("Access denied", driver.findElement(By.id("access-denied")).getText());
+        assertEquals("Access denied", waitFor(By.id("access-denied")).getText());
     }
 
     @Test
@@ -166,7 +170,7 @@ class CatalogueSeleniumTests {
 
         wait.until(ExpectedConditions.presenceOfElementLocated(By.id("flash-message")));
         assertTrue(driver.findElement(By.id("flash-message")).getText().contains("Item added"));
-        assertTrue(driver.findElement(By.id("item-table")).getText().contains("Selenium Keyboard"));
+        assertTrue(waitFor(By.id("item-table")).getText().contains("Selenium Keyboard"));
     }
 
     @Test
@@ -174,14 +178,14 @@ class CatalogueSeleniumTests {
         loginAsAdmin();
         driver.get(url("/admin/items/new"));
         driver.findElement(By.id("save-button")).click();
-        assertFalse(driver.findElements(By.cssSelector(".error")).isEmpty());
-        assertEquals("Add item", driver.findElement(By.id("form-title")).getText());
+        waitFor(By.cssSelector(".error"));
+        assertEquals("Add item", waitFor(By.id("form-title")).getText());
     }
 
     @Test
     void logoutReturnsToLoginPage() {
         loginAsUser();
         driver.findElement(By.id("logout-button")).click();
-        assertTrue(driver.findElement(By.id("logout-message")).isDisplayed());
+        assertTrue(waitFor(By.id("logout-message")).isDisplayed());
     }
 }
